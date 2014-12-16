@@ -1,49 +1,55 @@
-var canvas  = document.getElementById("doughnutGraph");
-        var chart = canvas.getContext("2d");
+function Doughnut(id, o) {
+	this.colors = ["#bbddb3", "#1d8e04","#5136f6", "#e2f5b4","#fc081f", "#E0FFFF", "#9edd08","#fb1ef8","#fdfbb4", "#faf406","#fbd4b7", "#f2700f","#f8bdb4", "#ea2507","#e2bcbd", "#9e2126"];
+	var canvas = document.getElementById(id);
+	var context = canvas.getContext('2d');
+	var centerX = Math.floor(canvas.width / 2) - Math.floor(canvas.width / 7);
+	var centerY = Math.floor(canvas.height / 2) + Math.floor(canvas.height / 7);
+	var radius = Math.floor(canvas.width /4);
+	var rectWidth = Math.floor(canvas.width / 15);
+	var rectHeight = Math.floor(canvas.height / 20);
+	var rectStartX = Math.floor(canvas.width) - Math.floor(canvas.width/3.5);
+	var rectStartY = Math.floor(canvas.height)/30;
+	this.canvas = document.getElementById(id);
+	var that = this;
+	console.log(o.data);
+	this.draw = function(){
+		console.log('inside draw');
+		var radObj = that.calculateRadian();
+		console.log(radObj);
+		var start=0;
+		var end = 0; 
+		context.beginPath();
+		context.lineWidth = radius/2;
+		context.arc(centerX, centerY, radius, 0, Math.PI );
+		context.stroke();
+		var font = rectHeight-5;
+		context.font =font+'px Arial';
+		for(var i=0;i<radObj.length;i++){
+			end+=radObj[i];
+			context.beginPath();
+			context.strokeStyle = that.colors[i];
+			context.fillStyle = that.colors[i];
+			context.arc(centerX, centerY, radius, start, end);
+			context.stroke();
+			context.restore();
+			context.fillRect(rectStartX,rectStartY,rectWidth,rectHeight);
+			context.fillText(o.labels[i],rectStartX+rectWidth+5,rectStartY+rectHeight/1.2);
+			rectStartY+=1.2*rectHeight; 
+			start = end;
+		}
+	};
+	this.calculateRadian = function(){
+		console.log(o.data);
+		var sum=0;
+		var radObj=[];
+		for(var i=0;i<o.data.length;i++){
+			sum+=o.data[i];
+		}
+		console.log(sum);
+		for(var i=0;i<o.data.length;i++){
+			radObj[i]=o.data[i]/sum*2*Math.PI;
+		}
+		return radObj;
+	};
+}
 
-        function drawdountChart(canvas)
-        {
-
-            this.x , this.y , this.radius , this.lineWidth , this.strockStyle , this.from , this.to = null;
-            this.set = function( x, y, radius, from, to, lineWidth, strockStyle)
-            {
-                this.x = x;
-                this.y = y;
-                this.radius = radius;
-                this.from=from;
-                this.to= to;
-                this.lineWidth = lineWidth;
-                this.strockStyle = strockStyle; 
-            }
-
-            this.draw = function(data)
-            {
-                canvas.beginPath();
-                canvas.lineWidth = this.lineWidth;
-                canvas.strokeStyle = this.strockStyle;
-                canvas.arc(this.x , this.y , this.radius , this.from , this.to);
-                canvas.stroke();
-                var numberOfParts = data.numberOfParts;
-                var parts = data.parts.pt;
-                var colors = data.colors.cs;
-                var df = 0;
-                for(var i = 0; i<numberOfParts; i++)
-                {
-                    canvas.beginPath();
-                    canvas.strokeStyle = colors[i];
-                    canvas.arc(this.x, this.y, this.radius, df, df + (Math.PI * 2) * (parts[i] / 100));
-                    canvas.stroke();
-                    df += (Math.PI * 2) * (parts[i] / 100);
-                }
-            }
-        }
-        var data = 
-            {
-                numberOfParts: 4,
-                parts:{"pt": [20 , 30 , 25 , 25]},//percentage of each parts 
-                colors:{"cs": ["red", "green", "blue", "yellow"]}//color of each part
-            };
-
-        var drawDount = new drawdountChart(chart);
-        drawDount.set(150, 150, 100, 0, Math.PI*2, 30, "#fff");
-        drawDount.draw(data);

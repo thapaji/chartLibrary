@@ -1,12 +1,12 @@
 // JavaScript Document
-window.onload = createPieChart;
+createPieChart();
 createInclinedBarGraph();
 createLineGraph();
 createMultiLineGraph();
 createBarGraph();
 //initBarGraph();
 //initPlot();
-//createDoughnut();
+createDoughnut();
 
 function createPieChart() {
 
