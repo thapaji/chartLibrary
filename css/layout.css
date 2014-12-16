@@ -1,0 +1,20 @@
+@charset "utf-8";
+/* CSS Document */
+
+#piechart{
+	background:#0099FF;}
+
+#bargraph{
+	background:#99FF00;}
+	
+#linegraph{
+	background:#61A25E;}
+	
+#barGraph{
+	background:#09F;}
+	
+#linePlot{
+	background:#FF00FF;}
+	
+#doughnutGraph{
+	background:#FFFFFF;}
